@@ -34,7 +34,6 @@ git clone https://github.com/Drewol/unnamed-sdvx-clone.git ./usc && (
 	echo "$TAG" > ~/version
 
 	git apply --index --ignore-whitespace ../cmake4-build-fix.patch
-	git apply --index --ignore-whitespace ../xdg-base-dir.patch
 	git submodule update --init --recursive
 	cmake -DCMAKE_BUILD_TYPE=Release ./
 	make -j"$(nproc)"

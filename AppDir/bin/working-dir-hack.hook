@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# This hack is needed since the app makes and writes to
+# some directories next to the binary and current working dir
+mkdir -p "$DATADIR"/unnamed-sdvx-clone/bin
+cd "$DATADIR"/unnamed-sdvx-clone
+
+cp -f "$APPDIR"/sharun   ./
+cp -f "$APPDIR"/.env     ./ 2>/dev/null || :
+cp -f "$APPDIR"/.preload ./ 2>/dev/null || :
+
+for d in audio fonts LightPlugins skins; do
+	[ -d ./bin/"$d" ] || cp -r "$APPDIR"/bin/"$d" ./bin/"$d" || :
+done
+
+# workaround uutils bug
+# https://github.com/pkgforge-dev/xenia-canary-AppImage/issues/14
+# this garbage was shipped in ubuntu 25.10 where ln -f does not even work...
+rm -f ./bin/usc-game
+ln -f ./sharun ./bin/usc-game
+
+# Shared libraries and other sharun support dirs
+ln -sfn "$APPDIR"/lib    ./lib
+ln -sfn "$APPDIR"/shared ./shared
+ln -sfn "$APPDIR"/share  ./share
+ln -sfn "$APPDIR"/etc    ./etc 2>/dev/null || :
+
+# Now jump to app
+exec ./bin/usc-game "$@"
