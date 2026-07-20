@@ -8,8 +8,9 @@ export OUTPATH=./dist
 export ADD_HOOKS="self-updater.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export ICON=https://raw.githubusercontent.com/Drewol/unnamed-sdvx-clone/refs/heads/develop/appimage/usc-game.png
+export DESKTOP=https://github.com/Drewol/unnamed-sdvx-clone/blob/develop/appimage/usc-game.desktop
 export DEPLOY_OPENGL=1
-export DEPLOY_PIPEWIRE=1
+export STARTUPWMCLASS=usc-game
 
 # Deploy dependencies
 quick-sharun ./AppDir/bin/*

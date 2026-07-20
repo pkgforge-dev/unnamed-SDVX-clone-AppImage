@@ -7,27 +7,37 @@ ARCH=$(uname -m)
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-    cmake  	 	   \
-    libdecor 	   \
-	noto-fonts	   \
-	pipewire-audio \
-	pipewire-jack  \
-	sdl2
+	cmake          \
+	freetype2      \
+	libarchive     \
+	libjpeg-turbo  \
+	libogg         \
+	libpng         \
+	libvorbis      \
+	noto-fonts     \
+	openssl        \
+	sdl2           \
+	zlib
+
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-get-debloated-pkgs --add-common --prefer-nano
-
-# Comment this out if you need an AUR package
-#make-aur-package PACKAGENAME
+get-debloated-pkgs --add-common --prefer-nano libdecor-mini
 
 # If the application needs to be manually built that has to be done down here
-if [ "${DEVEL_RELEASE-}" = 1 ]; then
-	package=unnamed-sdvx-clone-git
-else
-	package=unnamed-sdvx-clone
-fi
-make-aur-package "$package"
-pacman -Q "$package" | awk '{print $2; exit}' > ~/version
+git clone https://github.com/Drewol/unnamed-sdvx-clone.git ./usc && (
+	cd ./usc
+
+	git fetch --tags origin
+	TAG=$(git tag --sort=-v:refname | grep -vi 'rc\|alpha\|beta\|nightly' | head -1)
+	git checkout "$TAG"
+	echo "$TAG" > ~/version
+
+	git apply --index --ignore-whitespace ../cmake4-build-fix.patch
+	git submodule update --init --recursive
+	cmake -DCMAKE_BUILD_TYPE=Release ./
+	make -j"$(nproc)"
+)
+
 mkdir -p ./AppDir/bin
-mv -v /opt/unnamed-sdvx-clone/* ./AppDir/bin
+cp -r ./usc/bin/* ./AppDir/bin

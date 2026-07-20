@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Unnamed SDVX clone
-Comment=A game based on K-Shoot MANIA and Sound Voltex
-Type=Application
-Exec=usc-game
-Icon=usc-game
-Terminal=false
-StartupWMClass=usc-game
-Categories=Game;Rhythm;Tiles;
