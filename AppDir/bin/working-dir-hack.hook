@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# This hack is needed since the app makes and writes to
-# some directories next to the binary and current working dir
+# XDG_DATA_HOME needs to be set, otherwise the app tries to use the exeutable location
+# Yes it never tries to use the default of ~/.local/share wtf
+export XDG_DATA_HOME="$DATADIR"
+
+# Setting XDG_DATA_HOME is not enough, This hack is needed since the still
+# app makes and writes to some log files next to the binary
 mkdir -p "$DATADIR"/unnamed-sdvx-clone/bin
 cd "$DATADIR"/unnamed-sdvx-clone
 
@@ -10,7 +14,7 @@ cp -f "$APPDIR"/.env     ./ 2>/dev/null || :
 cp -f "$APPDIR"/.preload ./ 2>/dev/null || :
 
 for d in audio fonts LightPlugins skins; do
-	[ -d ./bin/"$d" ] || cp -r "$APPDIR"/bin/"$d" ./bin/"$d" || :
+	[ -d ./"$d" ] || cp -r "$APPDIR"/bin/"$d" ./"$d" || :
 done
 
 # workaround uutils bug
