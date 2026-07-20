@@ -12,6 +12,7 @@ export DESKTOP=https://raw.githubusercontent.com/Drewol/unnamed-sdvx-clone/refs/
 export DEPLOY_OPENGL=1
 export STARTUPWMCLASS=usc-game
 export APPNAME=Unnamed_SDVX_clone
+export URUNTIME_PRELOAD=1
 
 # Deploy dependencies
 quick-sharun ./AppDir/bin/*
